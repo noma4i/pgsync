@@ -559,7 +559,7 @@ Options:}
     end
 
     def identity
-      "restart identity" if @options[:restart_identity]
+      " restart identity" if @options[:restart_identity]
     end
 
     def sequences(conn, table, columns)
