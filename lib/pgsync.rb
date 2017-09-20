@@ -188,7 +188,7 @@ module PgSync
                   primary_key = self.primary_key(from_connection, table, from_schema)
                   abort "No primary key" unless primary_key
 
-                  to_connection.exec("TRUNCATE #{quote_ident(table)} CASCADE#{identity}") if opts[:truncate]
+                  to_connection.exec("TRUNCATE #{quote_ident(table)}#{identity} CASCADE") if opts[:truncate]
 
                   from_max_id = max_id(from_connection, table, primary_key, sql_clause)
                   to_max_id = max_id(to_connection, table, primary_key, sql_clause) + 1
@@ -268,7 +268,7 @@ module PgSync
                      file.unlink
                   end
                 else
-                  to_connection.exec("TRUNCATE #{quote_ident(table)} CASCADE#{identity}")
+                  to_connection.exec("TRUNCATE #{quote_ident(table)}#{identity} CASCADE")
                   to_connection.copy_data "COPY #{quote_ident(table)} (#{fields}) FROM STDIN" do
                     from_connection.copy_data copy_to_command do
                       while row = from_connection.get_copy_data
